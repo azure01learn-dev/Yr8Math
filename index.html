@@ -251,7 +251,7 @@
   <section id="explore" class="view active"></section>
   <section id="practice" class="view">
     <div class="chip-row" id="chipRow"></div>
-    <div id="quizArea"><p class="quiz-empty">Pick a topic above to start a 4-question practice quiz.</p></div>
+    <div id="quizArea"><p class="quiz-empty">Pick a topic above to start a practice quiz.</p></div>
   </section>
   <section id="progress" class="view"></section>
 
@@ -266,20 +266,36 @@ const TOPICS = [
     bigidea:"Ratio and scale. Multiplicative change.",
     cross:["Geography","Science","DT","RS","Food tech"],
     quiz:[
-      {q:"Share £60 in the ratio 2:3. What is the larger share?", opts:["£24","£30","£36","£40"], a:2},
-      {q:"A map has a scale of 1:25,000. A distance on the map is 4 cm. What is the real distance?", opts:["0.25 km","1 km","4 km","10 km"], a:1},
-      {q:"Simplify the ratio 15:25.", opts:["3:5","5:3","1:2","2:1"], a:0},
-      {q:"y is directly proportional to x. When x = 4, y = 12. Find y when x = 7.", opts:["18","21","24","28"], a:1},
-      {q:"Divide 120 in the ratio 3:5. What is the smaller share?", opts:["40","45","50","60"], a:1},
-      {q:"Write the ratio 8:12 in its simplest form.", opts:["2:3","4:6","1:2","3:4"], a:0},
-      {q:"A recipe uses flour and sugar in the ratio 5:2. If you use 300 g of flour, how much sugar do you need?", opts:["60 g","100 g","120 g","150 g"], a:2},
-      {q:"Write 1.5:3 as a ratio of whole numbers in its simplest form.", opts:["1:3","1:2","2:3","3:6"], a:1},
-      {q:"A scale model is built at a ratio of 1:20. The real object is 8 m long. How long is the model?", opts:["4 cm","20 cm","40 cm","80 cm"], a:2},
-      {q:"Two numbers are in the ratio 4:7 and sum to 99. Find the larger number.", opts:["44","56","63","70"], a:2},
-      {q:"A map has a scale of 1:50,000. Two towns are 6 cm apart on the map. What is the real distance?", opts:["0.3 km","3 km","6 km","30 km"], a:1},
-      {q:"If a:b = 3:4 and b:c = 2:5, find a:c.", opts:["3:5","3:8","3:10","6:10"], a:2},
-      {q:"Paint is mixed in the ratio blue:white = 2:5. How many litres of blue paint are needed for 21 litres of mixture in total?", opts:["3 L","6 L","9 L","15 L"], a:1},
-      {q:"Which of these ratios is NOT equivalent to 5:3?", opts:["10:6","15:9","20:15","25:15"], a:2}
+      {q:"Simplify the ratio 8a : 10a.", opts:["4:5", "8:10", "2:5", "4:10"], a:0},
+      {q:"Write the ratio 18:30 in its simplest form.", opts:["3:5", "5:3", "9:15", "2:3"], a:0},
+      {q:"Write the ratio 4:6 in the form 1 : n.", opts:["1 : 1.5", "1 : 2", "1 : 0.5", "1 : 4"], a:0},
+      {q:"Write the ratio 5:2 in the form n : 1.", opts:["2.5 : 1", "5 : 1", "0.4 : 1", "2 : 5"], a:0},
+      {q:"Write the ratio 5:8 in the form 1 : n.", opts:["1 : 3", "1 : 1.6", "1 : 0.625", "1 : 8"], a:1},
+      {q:"Asha types 720 words in 16 minutes, Ben types 828 words in 18 minutes, and Cai types 798 words in 19 minutes. Who types fastest?", opts:["Asha", "Ben", "Cai", "They are all the same speed"], a:1},
+      {q:"Share 1421 in the ratio 5:2. What is the larger share?", opts:["406", "609", "1015", "203"], a:2},
+      {q:"If x:y = 11:8 and y:z = 6:7, what is x:z?", opts:["33:28", "11:7", "66:48", "33:24"], a:0},
+      {q:"If a:b = 2:3 and b:c = 4:5, what is a:b:c?", opts:["2:3:5", "8:12:15", "8:6:15", "6:12:20"], a:1},
+      {q:"Two numbers are in the ratio 7:9. The difference between them is 150. What is the larger number?", opts:["525", "600", "675", "750"], a:2},
+      {q:"Three numbers are in the ratio 2:3:7 and their mean is 48. What is the largest number?", opts:["36", "72", "84", "96"], a:2},
+      {q:"Three numbers are in the ratio 2:3:7 and their mean is 48. What is the median of the three numbers?", opts:["24", "36", "48", "84"], a:1},
+      {q:"A bar model shows a with 4 boxes and b with 2 boxes. What is a:b in its simplest form?", opts:["4:2", "2:1", "1:2", "6:1"], a:1},
+      {q:"5 notebooks cost £4.20. Using the unitary method, how much do 8 notebooks cost?", opts:["£6.72", "£6.30", "£7.20", "£5.88"], a:0},
+      {q:"Which description matches two quantities in direct proportion?", opts:["As one increases, the other increases at a constant rate", "As one increases, the other decreases", "Their graph is a curve that never touches the axes", "They always add up to the same total"], a:0},
+      {q:"As one quantity goes up, the other goes down in a matching way. This is called...", opts:["Direct proportion", "Inverse proportion", "Equal proportion", "Random change"], a:1},
+      {q:"All direct proportion graphs go through which point?", opts:["The origin (0, 0)", "(1, 1)", "(0, 5)", "(1, 0)"], a:0},
+      {q:"Which is an example of direct proportion?", opts:["The total cost and the number of chocolate bars bought", "The speed and time to travel a fixed distance", "A person's age and their height", "The number of painters and the time to paint a wall"], a:0},
+      {q:"A recipe for 4 people uses 400 g of pasta. How much pasta is needed for 6 people?", opts:["500 g", "600 g", "800 g", "1.2 kg"], a:1},
+      {q:"A recipe for 4 people uses 2 shallots. How many shallots are needed for 10 people?", opts:["4", "5", "6", "8"], a:1},
+      {q:"A muffin recipe for 20 muffins uses 250 g of sugar. How much sugar is needed for 8 muffins?", opts:["80 g", "100 g", "125 g", "160 g"], a:1},
+      {q:"The cost C in pounds of p pencils is C = 1.5p. What is the cost of 10 pencils?", opts:["£1.50", "£11.50", "£15", "£150"], a:2},
+      {q:"The cost C in pounds of p pencils is C = 1.5p. How many pencils can you buy for £9?", opts:["4", "6", "7.5", "13.5"], a:1},
+      {q:"£1 = €1.20. How many euros do you get for £50?", opts:["€48", "€55", "€60", "€65"], a:2},
+      {q:"When a shape is enlarged, which of these stays the same?", opts:["The side lengths", "The angles", "The area", "The perimeter"], a:1},
+      {q:"A shape is enlarged by scale factor 3. A side of 4 cm becomes...", opts:["7 cm", "12 cm", "16 cm", "1.3 cm"], a:1},
+      {q:"An enlargement with a scale factor between 0 and 1 makes the shape...", opts:["Larger", "Smaller", "The same size", "Upside down"], a:1},
+      {q:"The lengths of a shape are enlarged by scale factor 3. By what factor does the area increase?", opts:["3", "6", "9", "27"], a:2},
+      {q:"A square has area 16 cm². Its lengths are enlarged by scale factor 2. What is the new area?", opts:["32 cm²", "48 cm²", "64 cm²", "256 cm²"], a:2},
+      {q:"x is the width of a square and y is its perimeter. How are x and y related?", opts:["Directly proportional (y = 4x)", "Inversely proportional", "Not related", "y = x²"], a:0}
     ]
   },
   {
@@ -289,10 +305,37 @@ const TOPICS = [
     bigidea:"The data handling cycle. Measures of location.",
     cross:["History — scales, proportion & statistics","MFL — interpreting data"],
     quiz:[
-      {q:"Which chart is best for showing how a whole is split into proportions?", opts:["Bar chart","Line graph","Pie chart","Scatter diagram"], a:2},
-      {q:"A scatter diagram is mainly used to show...", opts:["The mode","Correlation between two variables","A single average","Time only"], a:1},
-      {q:"A two-way table is used to show data for...", opts:["One variable only","Two categorical variables","Probability trees","A single event"], a:1},
-      {q:"Which average is most affected by an extreme outlier?", opts:["Median","Mode","Mean","Range"], a:2}
+      {q:"In a survey of 36 people, 9 chose football. What angle represents football on a pie chart?", opts:["36°", "90°", "9°", "45°"], a:1},
+      {q:"On a pie chart, a sector of 72° represents 20 people. How many people were surveyed in total?", opts:["72", "90", "100", "120"], a:2},
+      {q:"In a holiday survey of 180 people, the Europe sector is 124°. How many people chose Europe?", opts:["31", "62", "124", "72"], a:1},
+      {q:"A pie chart has angles UK 88°, USA 32°, Other 44° and Nowhere 72°. What is the angle for Europe?", opts:["124°", "136°", "116°", "144°"], a:0},
+      {q:"Which of these is qualitative data?", opts:["Favourite colour", "Height", "Time taken to run 100 m", "Temperature"], a:0},
+      {q:"Which of these is discrete data?", opts:["Height", "Temperature", "Number of students in a class", "Time needed for a journey"], a:2},
+      {q:"Which of these is continuous data?", opts:["Number of pets", "Score on a dice", "Height", "Number of siblings"], a:2},
+      {q:"Class A has a mean mark of 62 and a range of 10. Class B has a mean of 62 and a range of 30. Which statement is correct?", opts:["Class A's marks are more consistent", "Class B's marks are more consistent", "Class B did better on average", "Class A did better on average"], a:0},
+      {q:"Continuous data is usually found by...", opts:["Counting", "Measuring", "Listing", "Sorting"], a:1},
+      {q:"A two-way table shows 19 boys walk, 23 boys take the bus and 40 boys cycle. How many boys are there in total?", opts:["62", "72", "82", "92"], a:2},
+      {q:"60 students study a language. 24 are boys and 36 are girls. 15 study German, and 10 of those are girls. How many boys study German?", opts:["5", "10", "15", "25"], a:0},
+      {q:"A student is picked at random from the 60 students (24 boys, 36 girls). What is P(girl)?", opts:["0.4", "0.5", "0.6", "0.36"], a:2},
+      {q:"A two-way table shows 100 students: 33 walk and 49 come by car. The rest come by other means. How many is that?", opts:["18", "19", "22", "33"], a:0},
+      {q:"As a car gets older, its value goes down. This shows...", opts:["Positive correlation", "Negative correlation", "No correlation", "Perfect correlation"], a:1},
+      {q:"As height increases, shoe size tends to increase. This shows...", opts:["Positive correlation", "Negative correlation", "No correlation", "Causation"], a:0},
+      {q:"A scatter graph has points spread randomly with no pattern. This shows...", opts:["Positive correlation", "Negative correlation", "No correlation", "Strong positive correlation"], a:2},
+      {q:"Which is true about a line of best fit?", opts:["It is straight, with roughly equal numbers of points above and below", "It must go through the origin", "It must pass through every point", "It must be a curve"], a:0},
+      {q:"Does a line of best fit have to go through the origin?", opts:["Yes, always", "No, it doesn't have to", "Only for positive correlation", "Only for negative correlation"], a:1},
+      {q:"Estimating a value inside the range of the original data is called...", opts:["Extrapolation", "Interpolation", "Correlation", "Averaging"], a:1},
+      {q:"Estimating a value outside the range of the original data is called...", opts:["Extrapolation", "Interpolation", "Correlation", "Averaging"], a:0},
+      {q:"A scatter graph has data for cars aged 5 to 11 years. Which estimate is more reliable?", opts:["The value of an 8-year-old car", "The value of a 16-year-old car", "Both are equally reliable", "Neither can be estimated"], a:0},
+      {q:"The data covers cars aged 5 to 11 years. Why is an estimate for a 16-year-old car less reliable?", opts:["It is outside the range of the data (extrapolation)", "Because 16 is an even number", "Because it is interpolation", "Because the line is always wrong"], a:0},
+      {q:"A scatter graph shows ice cream sales and sunburn cases rising together. What can we say?", opts:["Ice cream causes sunburn", "There is correlation, but that does not prove one causes the other", "Sunburn causes ice cream sales", "There is no relationship"], a:1},
+      {q:"What does 'no correlation' mean on a scatter graph?", opts:["The variables are definitely unrelated", "There is no linear relationship between them", "The data is wrong", "The line of best fit is flat"], a:1},
+      {q:"An ice cream has 1 flavour (of 3) and 1 topping (of 4). How many different combinations are possible?", opts:["7", "12", "8", "16"], a:1},
+      {q:"A meal deal has 4 sandwiches, 3 drinks and 2 snacks. How many different meal deals are possible?", opts:["9", "12", "24", "36"], a:2},
+      {q:"Find the mean of 4, 7, 9, 12 and 8.", opts:["7", "8", "9", "10"], a:1},
+      {q:"Find the median of 3, 9, 4, 12, 7 and 5.", opts:["5", "6", "7", "6.5"], a:1},
+      {q:"Find the mode of 2, 5, 3, 5, 7, 2, 5.", opts:["2", "3", "5", "7"], a:2},
+      {q:"Find the range of 14, 6, 22, 9 and 17.", opts:["8", "14", "16", "22"], a:2},
+      {q:"A data set contains one very large outlier. Which average is most affected?", opts:["Mean", "Median", "Mode", "None of them"], a:0}
     ]
   },
   {
@@ -454,13 +497,33 @@ function renderChips(){
   });
 }
 
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function buildSet(topic, n){
+  const picked = shuffle(topic.quiz).slice(0, Math.min(n, topic.quiz.length));
+  return picked.map(q=>{
+    const order = shuffle(q.opts.map((o,i)=>i));
+    return { q:q.q, opts:order.map(i=>q.opts[i]), a:order.indexOf(q.a) };
+  });
+}
+
+const QUIZ_SIZE = 10;
+
 function renderQuiz(topic){
-  const answers = new Array(topic.quiz.length).fill(null);
+  let set = buildSet(topic, QUIZ_SIZE);
+  let answers = new Array(set.length).fill(null);
   let submitted = false;
 
   function draw(){
     let html = '';
-    topic.quiz.forEach((q, qi)=>{
+    set.forEach((q, qi)=>{
       html += `<div class="q" data-qi="${qi}"><p class="q-text">${qi+1}. ${q.q}</p>`;
       q.opts.forEach((opt, oi)=>{
         let cls = 'opt';
@@ -478,16 +541,17 @@ function renderQuiz(topic){
     });
 
     if(submitted){
-      const correctCount = topic.quiz.filter((q,qi)=>answers[qi]===q.a).length;
-      const pct = Math.round((correctCount/topic.quiz.length)*100);
+      const correctCount = set.filter((q,qi)=>answers[qi]===q.a).length;
+      const pct = Math.round((correctCount/set.length)*100);
       saveScore(topic.id, pct);
-      html = `<div class="result-banner">${correctCount} / ${topic.quiz.length} correct — ${pct}%</div>` + html;
-      html += `<button class="btn ghost" id="retryBtn">Try again</button>`;
+      html = `<div class="result-banner">${correctCount} / ${set.length} correct — ${pct}%</div>` + html;
+      html += `<button class="btn ghost" id="retryBtn">Try a new set</button>`;
     } else {
       html += `<button class="btn" id="submitBtn" ${answers.includes(null) ? 'disabled' : ''}>Submit answers</button>`;
     }
 
-    quizArea.innerHTML = `<p class="quiz-empty" style="margin-bottom:14px;">Topic ${topic.id} · ${topic.title}</p>` + html;
+    const bank = topic.quiz.length;
+    quizArea.innerHTML = `<p class="quiz-empty" style="margin-bottom:14px;">Topic ${topic.id} · ${topic.title} · ${set.length} questions from a bank of ${bank}</p>` + html;
 
     if(!submitted){
       quizArea.querySelectorAll('.opt').forEach(el=>{
@@ -501,9 +565,11 @@ function renderQuiz(topic){
       if(sb) sb.addEventListener('click', ()=>{ submitted = true; draw(); renderChips(); });
     } else {
       document.getElementById('retryBtn').addEventListener('click', ()=>{
+        set = buildSet(topic, QUIZ_SIZE);
+        answers = new Array(set.length).fill(null);
         submitted = false;
-        answers.fill(null);
         draw();
+        window.scrollTo({top:0, behavior:'smooth'});
       });
     }
   }
