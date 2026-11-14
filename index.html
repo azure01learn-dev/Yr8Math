@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 8 Maths</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f5f6f0;
+    --paper-line:#d9dccf;
+    --ink:#1f2a3c;
+    --ink-soft:#4d5b73;
+    --coral:#e0533e;
+    --gold:#c98f2b;
+    --teal:#2f6f6a;
+    --card:#ffffff;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(0deg, var(--paper-line) 0px, var(--paper-line) 1px, transparent 1px, transparent 28px),
+      repeating-linear-gradient(90deg, var(--paper-line) 0px, var(--paper-line) 1px, transparent 1px, transparent 28px),
+      var(--paper);
+    background-size: 28px 28px, 28px 28px, auto;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px; margin:0 auto; padding:28px 20px 80px;}
+
+  header.top{margin-bottom:22px;}
+  .kicker{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:13px;
+    letter-spacing:0.02em;
+    color:var(--teal);
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(34px, 8vw, 52px);
+    line-height:0.98;
+    margin:0 0 10px;
+    color:var(--ink);
+  }
+  h1 span{color:var(--coral);}
+  .sub{
+    font-size:16px;
+    color:var(--ink-soft);
+    max-width:480px;
+    line-height:1.5;
+    margin:0;
+  }
+
+  nav.tabs{
+    display:flex;
+    gap:6px;
+    margin:26px 0 22px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:0;
+  }
+  nav.tabs button{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:15px;
+    font-weight:600;
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    padding:10px 4px;
+    margin-right:22px;
+    cursor:pointer;
+    position:relative;
+    top:2px;
+  }
+  nav.tabs button.active{color:var(--ink);}
+  nav.tabs button.active::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:-2px;
+    height:3px;
+    background:var(--coral);
+  }
+  nav.tabs button:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+
+  section.view{display:none;}
+  section.view.active{display:block;}
+
+  /* Explore tab */
+  .topic{
+    background:var(--card);
+    border:1px solid #d7d9cf;
+    border-radius:var(--radius);
+    margin-bottom:10px;
+    overflow:hidden;
+  }
+  .topic-head{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 16px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .topic-num{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    width:28px; height:28px;
+    border-radius:50%;
+    border:1.5px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .topic-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:17px;
+    flex:1;
+  }
+  .topic-strand{font-size:13px; color:var(--ink-soft); font-weight:400; display:block; margin-top:2px; font-family:'IBM Plex Sans',sans-serif;}
+  .chevron{font-size:18px; color:var(--ink-soft); transition:transform .18s ease; flex-shrink:0;}
+  .topic.open .chevron{transform:rotate(180deg);}
+  .topic-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .22s ease;
+    border-top:1px solid transparent;
+  }
+  .topic.open .topic-body{border-top:1px solid #e5e6dd;}
+  .topic-body-inner{padding:14px 16px 18px 16px;}
+  .block{margin-bottom:12px;}
+  .block:last-child{margin-bottom:0;}
+  .block-label{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:12px;
+    font-weight:600;
+    color:var(--teal);
+    margin:0 0 4px;
+  }
+  .block p{margin:0; font-size:14.5px; line-height:1.55; color:var(--ink);}
+  .tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;}
+  .tags span{
+    font-size:12px;
+    background:#eef1e8;
+    border:1px solid #d7d9cf;
+    padding:3px 9px;
+    border-radius:20px;
+    color:var(--ink-soft);
+  }
+
+  /* Practice tab */
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .chip{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    background:var(--card);
+    border:1.5px solid var(--ink);
+    padding:8px 14px;
+    border-radius:20px;
+    cursor:pointer;
+  }
+  .chip.done{background:#eaf3ee; border-color:var(--teal); color:var(--teal);}
+  .chip.active{background:var(--ink); color:var(--paper);}
+
+  #quizArea{background:var(--card); border:1px solid #d7d9cf; border-radius:var(--radius); padding:20px;}
+  .quiz-empty{color:var(--ink-soft); font-size:14.5px;}
+  .q{margin-bottom:22px;}
+  .q:last-of-type{margin-bottom:8px;}
+  .q-text{font-size:15.5px; font-weight:500; margin:0 0 10px; line-height:1.45;}
+  .opt{
+    display:flex; align-items:center; gap:10px;
+    padding:9px 12px;
+    border:1.5px solid #d7d9cf;
+    border-radius:8px;
+    margin-bottom:7px;
+    cursor:pointer;
+    font-size:14.5px;
+  }
+  .opt:hover{border-color:var(--ink-soft);}
+  .opt.selected{border-color:var(--ink); background:#f0f1ea;}
+  .opt.correct{border-color:var(--teal); background:#e6f2ee;}
+  .opt.wrong{border-color:var(--coral); background:#fbeae7;}
+  .opt input{accent-color:var(--ink);}
+  .btn{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:11px 20px;
+    border-radius:8px;
+    cursor:pointer;
+  }
+  .btn:disabled{opacity:0.4; cursor:default;}
+  .btn.ghost{background:none; color:var(--ink); border:1.5px solid var(--ink);}
+  .result-banner{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:16px;
+    padding:12px 14px;
+    border-radius:8px;
+    margin-bottom:16px;
+    background:#eef1e8;
+  }
+
+  /* Progress tab */
+  .prog-row{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+  .prog-label{width:210px; font-size:13.5px; flex-shrink:0;}
+  .prog-label b{display:block; font-family:'Space Grotesk',sans-serif; font-size:14px;}
+  .prog-track{flex:1; height:14px; background:#e5e6dd; border-radius:8px; overflow:hidden;}
+  .prog-fill{height:100%; background:var(--gold); border-radius:8px; transition:width .3s ease;}
+  .prog-fill.zero{background:transparent;}
+  .prog-pct{width:42px; text-align:right; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:13.5px; flex-shrink:0;}
+  .overall{
+    background:var(--card); border:1px solid #d7d9cf; border-radius:var(--radius);
+    padding:18px 20px; margin-bottom:24px;
+  }
+  .overall .big{font-family:'Space Grotesk',sans-serif; font-size:38px; font-weight:700;}
+  .overall .cap{font-size:13.5px; color:var(--ink-soft);}
+  .reset-link{font-size:12.5px; color:var(--ink-soft); background:none; border:none; text-decoration:underline; cursor:pointer; padding:0; margin-top:18px;}
+
+  @media (max-width:480px){
+    .prog-label{width:120px; font-size:12.5px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <p class="kicker">KS3 MATHEMATICS</p>
+    <h1>Year 8<span>.</span></h1>
+    <p class="sub">Nine topics, one year. Explore what each one covers, practise with quick quizzes, and track how you're doing.</p>
+  </header>
+
+  <nav class="tabs">
+    <button data-view="explore" class="active">Explore</button>
+    <button data-view="practice">Practice</button>
+    <button data-view="progress">My progress</button>
+  </nav>
+
+  <section id="explore" class="view active"></section>
+  <section id="practice" class="view">
+    <div class="chip-row" id="chipRow"></div>
+    <div id="quizArea"><p class="quiz-empty">Pick a topic above to start a 4-question practice quiz.</p></div>
+  </section>
+  <section id="progress" class="view"></section>
+
+</div>
+
+<script>
+const TOPICS = [
+  {
+    id:1, title:"Proportional Reasoning", strand:"Ratio and Proportion",
+    knowledge:"Understanding and comparing ratio, using ratio notation, solving ratio problems, scale factors, maps, direct proportion.",
+    skills:"Problem solving. Applying knowledge. Fluency. Using maths to justify.",
+    bigidea:"Ratio and scale. Multiplicative change.",
+    cross:["Geography","Science","DT","RS","Food tech"],
+    quiz:[
+      {q:"Share £60 in the ratio 2:3. What is the larger share?", opts:["£24","£30","£36","£40"], a:2},
+      {q:"A map has a scale of 1:25,000. A distance on the map is 4 cm. What is the real distance?", opts:["0.25 km","1 km","4 km","10 km"], a:1},
+      {q:"Simplify the ratio 15:25.", opts:["3:5","5:3","1:2","2:1"], a:0},
+      {q:"y is directly proportional to x. When x = 4, y = 12. Find y when x = 7.", opts:["18","21","24","28"], a:1},
+      {q:"Divide 120 in the ratio 3:5. What is the smaller share?", opts:["40","45","50","60"], a:1},
+      {q:"Write the ratio 8:12 in its simplest form.", opts:["2:3","4:6","1:2","3:4"], a:0},
+      {q:"A recipe uses flour and sugar in the ratio 5:2. If you use 300 g of flour, how much sugar do you need?", opts:["60 g","100 g","120 g","150 g"], a:2},
+      {q:"Write 1.5:3 as a ratio of whole numbers in its simplest form.", opts:["1:3","1:2","2:3","3:6"], a:1},
+      {q:"A scale model is built at a ratio of 1:20. The real object is 8 m long. How long is the model?", opts:["4 cm","20 cm","40 cm","80 cm"], a:2},
+      {q:"Two numbers are in the ratio 4:7 and sum to 99. Find the larger number.", opts:["44","56","63","70"], a:2},
+      {q:"A map has a scale of 1:50,000. Two towns are 6 cm apart on the map. What is the real distance?", opts:["0.3 km","3 km","6 km","30 km"], a:1},
+      {q:"If a:b = 3:4 and b:c = 2:5, find a:c.", opts:["3:5","3:8","3:10","6:10"], a:2},
+      {q:"Paint is mixed in the ratio blue:white = 2:5. How many litres of blue paint are needed for 21 litres of mixture in total?", opts:["3 L","6 L","9 L","15 L"], a:1},
+      {q:"Which of these ratios is NOT equivalent to 5:3?", opts:["10:6","15:9","20:15","25:15"], a:2}
+    ]
+  },
+  {
+    id:2, title:"Reasoning with Data", strand:"Data Handling",
+    knowledge:"The data handling cycle, interpreting statistical diagrams, pie charts, averages, comparing distributions, scatter diagrams and correlation, two-way tables, listing outcomes, sample space diagrams.",
+    skills:"Mathematical thinking. Using different representations and structures. Collaborative working. Oracy and presentation skills.",
+    bigidea:"The data handling cycle. Measures of location.",
+    cross:["History — scales, proportion & statistics","MFL — interpreting data"],
+    quiz:[
+      {q:"Which chart is best for showing how a whole is split into proportions?", opts:["Bar chart","Line graph","Pie chart","Scatter diagram"], a:2},
+      {q:"A scatter diagram is mainly used to show...", opts:["The mode","Correlation between two variables","A single average","Time only"], a:1},
+      {q:"A two-way table is used to show data for...", opts:["One variable only","Two categorical variables","Probability trees","A single event"], a:1},
+      {q:"Which average is most affected by an extreme outlier?", opts:["Median","Mode","Mean","Range"], a:2}
+    ]
+  },
+  {
+    id:3, title:"Shape Transformations", strand:"Transformations",
+    knowledge:"Line and rotational symmetry, drawing and interpreting reflections, translations, rotations, and multiple transformations.",
+    skills:"Problem solving. Applying knowledge. Fluency. Mathematical thinking.",
+    bigidea:"2D shape transformations — drawing and being able to identify and describe them.",
+    cross:["DT and Art — making and describing patterns"],
+    quiz:[
+      {q:"When a shape is reflected, what stays the same?", opts:["Its position", "Its orientation", "Its size and shape", "Nothing"], a:2},
+      {q:"A shape with rotational symmetry of order 1 means...", opts:["It has no rotational symmetry", "It has 2 lines of symmetry", "It is regular", "It has infinite symmetry"], a:0},
+      {q:"Translating a shape by the vector (3, -2) moves it...", opts:["3 right, 2 down", "3 left, 2 up", "3 up, 2 right", "3 down, 2 left"], a:0},
+      {q:"How many lines of symmetry does a square have?", opts:["1", "2", "4", "8"], a:2}
+    ]
+  },
+  {
+    id:4, title:"Manipulation of Number", strand:"Fractions & Percentages",
+    knowledge:"Multiplying and dividing fractions. Percentage increase, decrease, error/change, reverse percentages, repeated percentage change, practical money — wages, taxes, interest, best buys.",
+    skills:"Problem solving. Applying knowledge. Fluency. Using different representations and structures. Collaborative working. Oracy and presentation skills.",
+    bigidea:"Number work. Using percentages. Maths and money.",
+    cross:["Geography","Science","DT","Food tech"],
+    quiz:[
+      {q:"Increase £80 by 15%.", opts:["£84", "£88", "£92", "£95"], a:2},
+      {q:"Work out 3/4 × 2/5.", opts:["3/10", "5/9", "2/3", "6/9"], a:0},
+      {q:"A price is reduced by 20% to £48. What was the original price?", opts:["£54", "£57.60", "£60", "£64"], a:2},
+      {q:"Find the simple interest on £200 at 5% per year for 3 years.", opts:["£10", "£20", "£30", "£40"], a:2}
+    ]
+  },
+  {
+    id:5, title:"Algebraic Manipulation", strand:"Equations & Expressions",
+    knowledge:"Multiplying single and double brackets, forming expressions, equations, formulae and identities, solving equations and inequalities, sequences, trial and improvement, intro to simple algebraic proof, powers of indices.",
+    skills:"Problem solving. Applying knowledge. Fluency. Mathematical thinking.",
+    bigidea:"Brackets, equations and inequalities. Sequences. Use of formulae. The difference between equations, expressions, formulae and identities, and the ability to manipulate all of the above.",
+    cross:["Food tech — using tables and graphs"],
+    quiz:[
+      {q:"Expand (x + 3)(x + 5).", opts:["x² + 8x + 15", "x² + 15x + 8", "x² + 8x + 8", "x² + 2x + 15"], a:0},
+      {q:"Solve 3x − 4 = 11.", opts:["x = 3", "x = 4", "x = 5", "x = 7"], a:2},
+      {q:"Find the nth term of the sequence 5, 8, 11, 14, ...", opts:["n + 5", "2n + 3", "3n − 2", "3n + 2"], a:3},
+      {q:"Which of these is an identity, true for all values of x?", opts:["2(x + 3) = 2x + 6", "2x + 3 = 7", "x + 1 = 5", "3x = 9"], a:0}
+    ]
+  },
+  {
+    id:6, title:"Developing Geometry", strand:"Geometrical Reasoning",
+    knowledge:"Angles in parallel lines, standard constructions, bearings, proof, angles in polygons, Pythagoras' theorem.",
+    skills:"Problem solving. Applying knowledge. Fluency. Mathematical thinking. Using different representations and structures. Collaborative working. Oracy and presentation skills.",
+    bigidea:"Angles in parallel lines. Angles in polygons. Informal use of Pythagoras' theorem.",
+    cross:["Geography, Science, DT — symmetry, design, bearings","Art — geometry and perspective"],
+    quiz:[
+      {q:"The angles in a triangle always sum to...", opts:["90°", "180°", "270°", "360°"], a:1},
+      {q:"Co-interior (allied) angles between parallel lines sum to...", opts:["60°", "90°", "180°", "360°"], a:2},
+      {q:"What is the sum of the interior angles of a hexagon?", opts:["360°", "540°", "720°", "900°"], a:2},
+      {q:"Pythagoras' theorem applies to which type of triangle?", opts:["Any triangle", "Equilateral triangle", "Right-angled triangle", "Isosceles triangle"], a:2}
+    ]
+  },
+  {
+    id:7, title:"Probability", strand:"Probability",
+    knowledge:"Probability, relative frequency, sample space, frequency trees.",
+    skills:"Problem solving. Mathematical thinking.",
+    bigidea:"Calculate probability using appropriate diagrams.",
+    cross:[],
+    quiz:[
+      {q:"What is the probability of an impossible event?", opts:["0", "0.5", "1", "It cannot be found"], a:0},
+      {q:"A bag has 3 red balls and 2 blue balls. What is P(blue)?", opts:["1/2", "2/3", "2/5", "3/5"], a:2},
+      {q:"Relative frequency estimates probability based on...", opts:["Guesswork", "Theory alone", "Experimental results", "Listing outcomes only"], a:2},
+      {q:"Two coins are flipped. How many outcomes are in the sample space?", opts:["2", "3", "4", "8"], a:2}
+    ]
+  },
+  {
+    id:8, title:"Co-ordinate Geometry & Sequences", strand:"Co-ordinate Geometry",
+    knowledge:"Plotting straight line and quadratic graphs, equations parallel to the axes, modelling situations with expressions, formulae and graphs, geometry problem solving, indices.",
+    skills:"Problem solving. Applying knowledge. Fluency. Mathematical thinking. Using different representations and structures. Collaborative working. Oracy and presentation skills.",
+    bigidea:"Working in the Cartesian plane. Collecting and representing data. Using tables. Use of Pythagoras' theorem. Indices.",
+    cross:["Science — manipulating algebraic expressions"],
+    quiz:[
+      {q:"The line x = 4 is...", opts:["Vertical", "Horizontal", "Diagonal", "Curved"], a:0},
+      {q:"What is the gradient of the line y = 3x − 2?", opts:["-3", "-2", "2", "3"], a:3},
+      {q:"Where is the minimum point of the graph y = x²?", opts:["(0, 0)", "(1, 1)", "(-1, 1)", "(0, 1)"], a:0},
+      {q:"Which point lies on the line y = 2x + 1?", opts:["(1, 1)", "(2, 3)", "(2, 5)", "(3, 5)"], a:2}
+    ]
+  },
+  {
+    id:9, title:"Constructions and Measures", strand:"Constructions & Measures",
+    knowledge:"Accurate constructions of triangles and loci. Use of units, finding area of trapezia and circles, sectors (simple) and compound shapes, use of exact answers.",
+    skills:"Problem solving. Applying knowledge. Fluency. Mathematical thinking. Using different representations and structures. Collaborative working. Oracy and presentation skills.",
+    bigidea:"Constructions using compasses and protractor. Area of trapezia and circles.",
+    cross:["Geography, Science, DT — constructions, accurate drawing, symmetry, calculating area, design, bearings"],
+    quiz:[
+      {q:"Which tools are needed to bisect an angle accurately?", opts:["Compasses and straightedge", "Protractor only", "Ruler only", "Calculator"], a:0},
+      {q:"What is the formula for the area of a trapezium?", opts:["a × b", "½bh", "½(a + b)h", "πr²"], a:2},
+      {q:"Find the area of a circle with radius 7 (use π ≈ 3.14).", opts:["≈21.98", "≈43.96", "≈153.9", "≈308"], a:2},
+      {q:"The locus of points equidistant from a fixed point is a...", opts:["Straight line", "Circle", "Angle bisector", "Perpendicular bisector"], a:1}
+    ]
+  }
+];
+
+const STORE_KEY = "y8maths_scores";
+function loadScores(){
+  try{ return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); }
+  catch(e){ return {}; }
+}
+function saveScore(topicId, pct){
+  try{
+    const s = loadScores();
+    if(!(topicId in s) || pct > s[topicId]) s[topicId] = pct;
+    localStorage.setItem(STORE_KEY, JSON.stringify(s));
+  }catch(e){}
+}
+
+// ---------- Explore tab ----------
+const exploreEl = document.getElementById('explore');
+TOPICS.forEach(t=>{
+  const div = document.createElement('div');
+  div.className = 'topic';
+  const crossHtml = t.cross.length
+    ? `<div class="block"><p class="block-label">Cross-curricular links</p><div class="tags">${t.cross.map(c=>`<span>${c}</span>`).join('')}</div></div>`
+    : '';
+  div.innerHTML = `
+    <div class="topic-head">
+      <div class="topic-num">${t.id}</div>
+      <div class="topic-title">${t.title}<span class="topic-strand">${t.strand}</span></div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="topic-body"><div class="topic-body-inner">
+      <div class="block"><p class="block-label">What you'll know</p><p>${t.knowledge}</p></div>
+      <div class="block"><p class="block-label">Skills you'll build</p><p>${t.skills}</p></div>
+      <div class="block"><p class="block-label">The big idea</p><p>${t.bigidea}</p></div>
+      ${crossHtml}
+    </div></div>
+  `;
+  div.querySelector('.topic-head').addEventListener('click', ()=>{
+    const isOpen = div.classList.contains('open');
+    document.querySelectorAll('.topic.open').forEach(o=>{
+      o.classList.remove('open');
+      o.querySelector('.topic-body').style.maxHeight = null;
+    });
+    if(!isOpen){
+      div.classList.add('open');
+      const body = div.querySelector('.topic-body');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  });
+  exploreEl.appendChild(div);
+});
+
+// ---------- Practice tab ----------
+const chipRow = document.getElementById('chipRow');
+const quizArea = document.getElementById('quizArea');
+let activeTopicId = null;
+
+function renderChips(){
+  const scores = loadScores();
+  chipRow.innerHTML = '';
+  TOPICS.forEach(t=>{
+    const chip = document.createElement('button');
+    chip.className = 'chip' + (t.id in scores ? ' done' : '') + (t.id===activeTopicId ? ' active':'');
+    chip.textContent = t.id + '. ' + t.title;
+    chip.addEventListener('click', ()=>{ activeTopicId = t.id; renderChips(); renderQuiz(t); });
+    chipRow.appendChild(chip);
+  });
+}
+
+function renderQuiz(topic){
+  const answers = new Array(topic.quiz.length).fill(null);
+  let submitted = false;
+
+  function draw(){
+    let html = '';
+    topic.quiz.forEach((q, qi)=>{
+      html += `<div class="q" data-qi="${qi}"><p class="q-text">${qi+1}. ${q.q}</p>`;
+      q.opts.forEach((opt, oi)=>{
+        let cls = 'opt';
+        if(submitted){
+          if(oi === q.a) cls += ' correct';
+          else if(answers[qi] === oi) cls += ' wrong';
+        } else if(answers[qi] === oi){
+          cls += ' selected';
+        }
+        html += `<label class="${cls}" data-qi="${qi}" data-oi="${oi}">
+          <input type="radio" name="q${qi}" ${answers[qi]===oi?'checked':''} ${submitted?'disabled':''}/> ${opt}
+        </label>`;
+      });
+      html += `</div>`;
+    });
+
+    if(submitted){
+      const correctCount = topic.quiz.filter((q,qi)=>answers[qi]===q.a).length;
+      const pct = Math.round((correctCount/topic.quiz.length)*100);
+      saveScore(topic.id, pct);
+      html = `<div class="result-banner">${correctCount} / ${topic.quiz.length} correct — ${pct}%</div>` + html;
+      html += `<button class="btn ghost" id="retryBtn">Try again</button>`;
+    } else {
+      html += `<button class="btn" id="submitBtn" ${answers.includes(null) ? 'disabled' : ''}>Submit answers</button>`;
+    }
+
+    quizArea.innerHTML = `<p class="quiz-empty" style="margin-bottom:14px;">Topic ${topic.id} · ${topic.title}</p>` + html;
+
+    if(!submitted){
+      quizArea.querySelectorAll('.opt').forEach(el=>{
+        el.addEventListener('click', ()=>{
+          const qi = +el.dataset.qi, oi = +el.dataset.oi;
+          answers[qi] = oi;
+          draw();
+        });
+      });
+      const sb = document.getElementById('submitBtn');
+      if(sb) sb.addEventListener('click', ()=>{ submitted = true; draw(); renderChips(); });
+    } else {
+      document.getElementById('retryBtn').addEventListener('click', ()=>{
+        submitted = false;
+        answers.fill(null);
+        draw();
+      });
+    }
+  }
+  draw();
+}
+
+renderChips();
+
+// ---------- Progress tab ----------
+const progressEl = document.getElementById('progress');
+function renderProgress(){
+  const scores = loadScores();
+  const attempted = TOPICS.filter(t => t.id in scores);
+  const avg = attempted.length ? Math.round(attempted.reduce((s,t)=>s+scores[t.id],0)/attempted.length) : 0;
+
+  let rows = '';
+  TOPICS.forEach(t=>{
+    const pct = scores[t.id] ?? 0;
+    const has = t.id in scores;
+    rows += `
+      <div class="prog-row">
+        <div class="prog-label"><b>${t.id}. ${t.title}</b>${t.strand}</div>
+        <div class="prog-track"><div class="prog-fill ${has?'':'zero'}" style="width:${pct}%"></div></div>
+        <div class="prog-pct">${has ? pct+'%' : '—'}</div>
+      </div>`;
+  });
+
+  progressEl.innerHTML = `
+    <div class="overall">
+      <div class="big">${attempted.length} / ${TOPICS.length}</div>
+      <div class="cap">topics practised${attempted.length ? ' · average best score ' + avg + '%' : ''}</div>
+    </div>
+    ${rows}
+    <button class="reset-link" id="resetBtn">Reset progress</button>
+  `;
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+    renderProgress();
+    renderChips();
+  });
+}
+
+// ---------- Tabs ----------
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('section.view').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    const view = document.getElementById(btn.dataset.view);
+    view.classList.add('active');
+    if(btn.dataset.view === 'progress') renderProgress();
+  });
+});
+
+renderProgress();
+</script>
+</body>
+</html>
