@@ -231,32 +231,112 @@
   @media (max-width:480px){
     .prog-label{width:120px; font-size:12.5px;}
   }
+
+  /* ---- login + teacher dashboard ---- */
+  [hidden]{display:none !important;}
+  .auth-card{
+    background:var(--card); border:1px solid #d7d9cf; border-radius:var(--radius);
+    padding:22px 22px 24px; max-width:420px; margin-top:8px;
+  }
+  .seg{display:flex; border:1.5px solid var(--ink); border-radius:8px; overflow:hidden; margin-bottom:18px;}
+  .seg button{
+    flex:1; font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px;
+    background:none; border:none; padding:10px; cursor:pointer; color:var(--ink);
+  }
+  .seg button.active{background:var(--ink); color:var(--paper);}
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-size:13px; font-weight:500; margin-bottom:5px; color:var(--ink-soft);}
+  .field input{
+    width:100%; font-family:'IBM Plex Sans',sans-serif; font-size:15px;
+    padding:10px 12px; border:1.5px solid #c9ccbf; border-radius:8px; background:#fff; color:var(--ink);
+  }
+  .field input:focus{outline:2px solid var(--teal); outline-offset:1px; border-color:var(--teal);}
+  .msg{font-size:13.5px; margin:0 0 14px; padding:9px 12px; border-radius:8px; line-height:1.45;}
+  .msg.err{background:#fbeae7; color:#8c2a1b;}
+  .msg.ok{background:#e6f2ee; color:#1f5550;}
+  .userbar{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    font-size:13.5px; color:var(--ink-soft); margin:-6px 0 4px;
+  }
+  .userbar b{color:var(--ink); font-family:'Space Grotesk',sans-serif;}
+  .linkbtn{
+    font-family:'IBM Plex Sans',sans-serif; font-size:13px; background:none; border:none;
+    color:var(--ink-soft); text-decoration:underline; cursor:pointer; padding:0;
+  }
+  .save-note{font-size:12.5px; color:var(--ink-soft); margin-top:6px; font-weight:400;}
+  .table-wrap{overflow-x:auto; background:var(--card); border:1px solid #d7d9cf; border-radius:var(--radius);}
+  table.grid{border-collapse:collapse; width:100%; min-width:640px; font-size:13.5px;}
+  table.grid th, table.grid td{padding:9px 8px; text-align:center; border-bottom:1px solid #e5e6dd;}
+  table.grid th{font-family:'Space Grotesk',sans-serif; font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+  table.grid th:first-child, table.grid td:first-child{text-align:left; padding-left:14px; white-space:nowrap; font-weight:500;}
+  .cell-hi{background:#e6f2ee; color:#1f5550; font-weight:600;}
+  .cell-mid{background:#f7edd6; color:#7a5412; font-weight:600;}
+  .cell-lo{background:#fbeae7; color:#8c2a1b; font-weight:600;}
+  .cell-none{color:#a5a99b;}
+  .key{font-size:12.5px; color:var(--ink-soft); line-height:1.6; margin-top:14px;}
+  .dash-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:10px;}
+  .dash-head p{margin:0; font-size:14px; color:var(--ink-soft);}
+  .loading{color:var(--ink-soft); font-size:14.5px;}
 </style>
 </head>
 <body>
+
 <div class="wrap">
 
   <header class="top">
     <p class="kicker">KS3 MATHEMATICS</p>
     <h1>Year 8<span>.</span></h1>
-    <p class="sub">Nine topics, one year. Explore what each one covers, practise with quick quizzes, and track how you're doing.</p>
+    <p class="sub">Nine topics, one year. Explore what each one covers and practise with quick quizzes.</p>
   </header>
 
-  <nav class="tabs">
-    <button data-view="explore" class="active">Explore</button>
-    <button data-view="practice">Practice</button>
-    <button data-view="progress">My progress</button>
-  </nav>
+  <p class="loading" id="loadingView">Loading…</p>
 
-  <section id="explore" class="view active"></section>
-  <section id="practice" class="view">
-    <div class="chip-row" id="chipRow"></div>
-    <div id="quizArea"><p class="quiz-empty">Pick a topic above to start a practice quiz.</p></div>
+  <section id="authView" hidden>
+    <div class="auth-card">
+      <div class="seg">
+        <button id="modeIn" class="active" type="button">Sign in</button>
+        <button id="modeUp" type="button">Create account</button>
+      </div>
+      <div id="authMsg"></div>
+      <div class="field" id="nameField" hidden>
+        <label for="nameInput">Your name</label>
+        <input id="nameInput" type="text" autocomplete="name" placeholder="e.g. Sam Patel">
+      </div>
+      <div class="field">
+        <label for="emailInput">Email</label>
+        <input id="emailInput" type="email" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="passInput">Password</label>
+        <input id="passInput" type="password" autocomplete="current-password" placeholder="At least 6 characters">
+      </div>
+      <button class="btn" id="authBtn" type="button">Sign in</button>
+    </div>
   </section>
-  <section id="progress" class="view"></section>
+
+  <div id="appView" hidden>
+    <div class="userbar">
+      <span>Signed in as <b id="whoami"></b></span>
+      <button class="linkbtn" id="signOutBtn" type="button">Sign out</button>
+    </div>
+
+    <nav class="tabs">
+      <button data-view="explore" class="active">Explore</button>
+      <button data-view="practice">Practice</button>
+      <button data-view="dashboard" id="dashTab" hidden>Class progress</button>
+    </nav>
+
+    <section id="explore" class="view active"></section>
+    <section id="practice" class="view">
+      <div class="chip-row" id="chipRow"></div>
+      <div id="quizArea"><p class="quiz-empty">Pick a topic above to start a practice quiz.</p></div>
+    </section>
+    <section id="dashboard" class="view"></section>
+  </div>
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
 <script>
 const TOPICS = [
   {
@@ -431,66 +511,65 @@ const TOPICS = [
   }
 ];
 
-const STORE_KEY = "y8maths_scores";
-function loadScores(){
-  try{ return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); }
-  catch(e){ return {}; }
-}
-function saveScore(topicId, pct){
-  try{
-    const s = loadScores();
-    if(!(topicId in s) || pct > s[topicId]) s[topicId] = pct;
-    localStorage.setItem(STORE_KEY, JSON.stringify(s));
-  }catch(e){}
-}
+const SUPABASE_URL = 'https://cgnrrtoswmjnoorvhsxu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_KmLb8zhEBEXHMz7OJe51hA_O1IarpRq';
+const QUIZ_SIZE = 10;
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = id => document.getElementById(id);
+
+let sb = null;
+let isTeacher = false;
+let activeTopicId = null;
+let exploreBuilt = false;
 
 // ---------- Explore tab ----------
-const exploreEl = document.getElementById('explore');
-TOPICS.forEach(t=>{
-  const div = document.createElement('div');
-  div.className = 'topic';
-  const crossHtml = t.cross.length
-    ? `<div class="block"><p class="block-label">Cross-curricular links</p><div class="tags">${t.cross.map(c=>`<span>${c}</span>`).join('')}</div></div>`
-    : '';
-  div.innerHTML = `
-    <div class="topic-head">
-      <div class="topic-num">${t.id}</div>
-      <div class="topic-title">${t.title}<span class="topic-strand">${t.strand}</span></div>
-      <div class="chevron">⌄</div>
-    </div>
-    <div class="topic-body"><div class="topic-body-inner">
-      <div class="block"><p class="block-label">What you'll know</p><p>${t.knowledge}</p></div>
-      <div class="block"><p class="block-label">Skills you'll build</p><p>${t.skills}</p></div>
-      <div class="block"><p class="block-label">The big idea</p><p>${t.bigidea}</p></div>
-      ${crossHtml}
-    </div></div>
-  `;
-  div.querySelector('.topic-head').addEventListener('click', ()=>{
-    const isOpen = div.classList.contains('open');
-    document.querySelectorAll('.topic.open').forEach(o=>{
-      o.classList.remove('open');
-      o.querySelector('.topic-body').style.maxHeight = null;
+function buildExplore(){
+  if(exploreBuilt) return;
+  exploreBuilt = true;
+  const exploreEl = $('explore');
+  TOPICS.forEach(t=>{
+    const div = document.createElement('div');
+    div.className = 'topic';
+    const crossHtml = t.cross.length
+      ? `<div class="block"><p class="block-label">Cross-curricular links</p><div class="tags">${t.cross.map(c=>`<span>${c}</span>`).join('')}</div></div>`
+      : '';
+    div.innerHTML = `
+      <div class="topic-head">
+        <div class="topic-num">${t.id}</div>
+        <div class="topic-title">${t.title}<span class="topic-strand">${t.strand}</span></div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="topic-body"><div class="topic-body-inner">
+        <div class="block"><p class="block-label">What you'll know</p><p>${t.knowledge}</p></div>
+        <div class="block"><p class="block-label">Skills you'll build</p><p>${t.skills}</p></div>
+        <div class="block"><p class="block-label">The big idea</p><p>${t.bigidea}</p></div>
+        ${crossHtml}
+      </div></div>
+    `;
+    div.querySelector('.topic-head').addEventListener('click', ()=>{
+      const isOpen = div.classList.contains('open');
+      document.querySelectorAll('.topic.open').forEach(o=>{
+        o.classList.remove('open');
+        o.querySelector('.topic-body').style.maxHeight = null;
+      });
+      if(!isOpen){
+        div.classList.add('open');
+        const body = div.querySelector('.topic-body');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
     });
-    if(!isOpen){
-      div.classList.add('open');
-      const body = div.querySelector('.topic-body');
-      body.style.maxHeight = body.scrollHeight + 'px';
-    }
+    exploreEl.appendChild(div);
   });
-  exploreEl.appendChild(div);
-});
+}
 
 // ---------- Practice tab ----------
-const chipRow = document.getElementById('chipRow');
-const quizArea = document.getElementById('quizArea');
-let activeTopicId = null;
-
 function renderChips(){
-  const scores = loadScores();
+  const chipRow = $('chipRow');
   chipRow.innerHTML = '';
   TOPICS.forEach(t=>{
     const chip = document.createElement('button');
-    chip.className = 'chip' + (t.id in scores ? ' done' : '') + (t.id===activeTopicId ? ' active':'');
+    chip.className = 'chip' + (t.id===activeTopicId ? ' active':'');
     chip.textContent = t.id + '. ' + t.title;
     chip.addEventListener('click', ()=>{ activeTopicId = t.id; renderChips(); renderQuiz(t); });
     chipRow.appendChild(chip);
@@ -514,9 +593,18 @@ function buildSet(topic, n){
   });
 }
 
-const QUIZ_SIZE = 10;
+async function saveScore(topicId, pct){
+  const note = $('saveNote');
+  try{
+    const { error } = await sb.from('scores').insert({ topic_id: topicId, pct: pct });
+    if(note) note.textContent = error ? 'Your score could not be saved. Tell your teacher.' : 'Score saved.';
+  }catch(e){
+    if(note) note.textContent = 'Your score could not be saved. Tell your teacher.';
+  }
+}
 
 function renderQuiz(topic){
+  const quizArea = $('quizArea');
   let set = buildSet(topic, QUIZ_SIZE);
   let answers = new Array(set.length).fill(null);
   let submitted = false;
@@ -543,28 +631,31 @@ function renderQuiz(topic){
     if(submitted){
       const correctCount = set.filter((q,qi)=>answers[qi]===q.a).length;
       const pct = Math.round((correctCount/set.length)*100);
-      saveScore(topic.id, pct);
-      html = `<div class="result-banner">${correctCount} / ${set.length} correct — ${pct}%</div>` + html;
+      html = `<div class="result-banner">${correctCount} / ${set.length} correct — ${pct}%<div class="save-note" id="saveNote">Saving…</div></div>` + html;
       html += `<button class="btn ghost" id="retryBtn">Try a new set</button>`;
     } else {
       html += `<button class="btn" id="submitBtn" ${answers.includes(null) ? 'disabled' : ''}>Submit answers</button>`;
     }
 
-    const bank = topic.quiz.length;
-    quizArea.innerHTML = `<p class="quiz-empty" style="margin-bottom:14px;">Topic ${topic.id} · ${topic.title} · ${set.length} questions from a bank of ${bank}</p>` + html;
+    quizArea.innerHTML = `<p class="quiz-empty" style="margin-bottom:14px;">Topic ${topic.id} · ${topic.title} · ${set.length} questions from a bank of ${topic.quiz.length}</p>` + html;
 
     if(!submitted){
       quizArea.querySelectorAll('.opt').forEach(el=>{
         el.addEventListener('click', ()=>{
-          const qi = +el.dataset.qi, oi = +el.dataset.oi;
-          answers[qi] = oi;
+          answers[+el.dataset.qi] = +el.dataset.oi;
           draw();
         });
       });
-      const sb = document.getElementById('submitBtn');
-      if(sb) sb.addEventListener('click', ()=>{ submitted = true; draw(); renderChips(); });
+      const sbtn = $('submitBtn');
+      if(sbtn) sbtn.addEventListener('click', ()=>{
+        submitted = true;
+        const correctCount = set.filter((q,qi)=>answers[qi]===q.a).length;
+        const pct = Math.round((correctCount/set.length)*100);
+        draw();
+        saveScore(topic.id, pct);
+      });
     } else {
-      document.getElementById('retryBtn').addEventListener('click', ()=>{
+      $('retryBtn').addEventListener('click', ()=>{
         set = buildSet(topic, QUIZ_SIZE);
         answers = new Array(set.length).fill(null);
         submitted = false;
@@ -576,40 +667,136 @@ function renderQuiz(topic){
   draw();
 }
 
-renderChips();
+// ---------- Teacher dashboard ----------
+async function fetchAll(table, columns){
+  const rows = [];
+  const page = 1000;
+  for(let from=0; ; from+=page){
+    const { data, error } = await sb.from(table).select(columns).range(from, from+page-1);
+    if(error) throw error;
+    rows.push(...data);
+    if(data.length < page) break;
+  }
+  return rows;
+}
 
-// ---------- Progress tab ----------
-const progressEl = document.getElementById('progress');
-function renderProgress(){
-  const scores = loadScores();
-  const attempted = TOPICS.filter(t => t.id in scores);
-  const avg = attempted.length ? Math.round(attempted.reduce((s,t)=>s+scores[t.id],0)/attempted.length) : 0;
+async function renderDashboard(){
+  const el = $('dashboard');
+  el.innerHTML = '<p class="loading">Loading class progress…</p>';
+  try{
+    const [profiles, scores] = await Promise.all([
+      fetchAll('profiles', 'id,display_name,role'),
+      fetchAll('scores', 'user_id,topic_id,pct,created_at')
+    ]);
+    const students = profiles.filter(p => p.role === 'student')
+      .sort((a,b)=> (a.display_name||'').localeCompare(b.display_name||''));
+    const byUser = {};
+    scores.forEach(s=>{
+      const u = byUser[s.user_id] || (byUser[s.user_id] = { best:{}, attempts:0 });
+      u.attempts++;
+      if(!(s.topic_id in u.best) || s.pct > u.best[s.topic_id]) u.best[s.topic_id] = s.pct;
+    });
 
-  let rows = '';
-  TOPICS.forEach(t=>{
-    const pct = scores[t.id] ?? 0;
-    const has = t.id in scores;
-    rows += `
-      <div class="prog-row">
-        <div class="prog-label"><b>${t.id}. ${t.title}</b>${t.strand}</div>
-        <div class="prog-track"><div class="prog-fill ${has?'':'zero'}" style="width:${pct}%"></div></div>
-        <div class="prog-pct">${has ? pct+'%' : '—'}</div>
-      </div>`;
-  });
+    let head = '<tr><th>Student</th>' + TOPICS.map(t=>`<th title="${esc(t.title)}">${t.id}</th>`).join('') + '<th>Avg</th><th>Attempts</th></tr>';
+    let rows = '';
+    students.forEach(p=>{
+      const u = byUser[p.id] || { best:{}, attempts:0 };
+      const vals = TOPICS.map(t=>u.best[t.id]);
+      const done = vals.filter(v=>v!==undefined);
+      const avg = done.length ? Math.round(done.reduce((a,b)=>a+b,0)/done.length) : null;
+      const cell = v => v===undefined ? '<td class="cell-none">–</td>'
+        : `<td class="${v>=80?'cell-hi':v>=50?'cell-mid':'cell-lo'}">${v}%</td>`;
+      rows += `<tr><td>${esc(p.display_name || 'Unnamed student')}</td>${vals.map(cell).join('')}`
+            + (avg===null ? '<td class="cell-none">–</td>' : `<td>${avg}%</td>`)
+            + `<td>${u.attempts}</td></tr>`;
+    });
+    if(!students.length) rows = '<tr><td colspan="12" class="cell-none" style="text-align:center;padding:20px;">No students have signed up yet.</td></tr>';
 
-  progressEl.innerHTML = `
-    <div class="overall">
-      <div class="big">${attempted.length} / ${TOPICS.length}</div>
-      <div class="cap">topics practised${attempted.length ? ' · average best score ' + avg + '%' : ''}</div>
-    </div>
-    ${rows}
-    <button class="reset-link" id="resetBtn">Reset progress</button>
-  `;
-  document.getElementById('resetBtn').addEventListener('click', ()=>{
-    try{ localStorage.removeItem(STORE_KEY); }catch(e){}
-    renderProgress();
-    renderChips();
-  });
+    el.innerHTML = `
+      <div class="dash-head">
+        <p>Best score per topic, for each student.</p>
+        <button class="btn ghost" id="refreshDash" type="button">Refresh</button>
+      </div>
+      <div class="table-wrap"><table class="grid"><thead>${head}</thead><tbody>${rows}</tbody></table></div>
+      <p class="key">${TOPICS.map(t=>`${t.id}. ${esc(t.title)}`).join(' &nbsp;·&nbsp; ')}</p>
+      <p class="key">Green 80%+ &nbsp;·&nbsp; Amber 50–79% &nbsp;·&nbsp; Red under 50% &nbsp;·&nbsp; – not attempted</p>
+    `;
+    $('refreshDash').addEventListener('click', renderDashboard);
+  }catch(e){
+    el.innerHTML = '<div class="msg err">Could not load class progress. Check the database setup has been run.</div>';
+  }
+}
+
+// ---------- Auth + session handling ----------
+function showMsg(text, kind){
+  $('authMsg').innerHTML = text ? `<div class="msg ${kind}">${esc(text)}</div>` : '';
+}
+
+function showAuth(){
+  $('loadingView').hidden = true;
+  $('appView').hidden = true;
+  $('authView').hidden = false;
+}
+
+async function handleSession(session){
+  if(!session){ showAuth(); return; }
+  let role = 'student', name = '';
+  try{
+    const { data, error } = await sb.from('profiles').select('role,display_name').eq('id', session.user.id).maybeSingle();
+    if(!error && data){ role = data.role; name = data.display_name || ''; }
+  }catch(e){}
+  isTeacher = role === 'teacher';
+  $('whoami').textContent = (name || session.user.email) + (isTeacher ? ' (teacher)' : '');
+  $('dashTab').hidden = !isTeacher;
+
+  buildExplore();
+  renderChips();
+
+  // reset to Explore tab
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('section.view').forEach(s=>s.classList.remove('active'));
+  document.querySelector('nav.tabs button[data-view="explore"]').classList.add('active');
+  $('explore').classList.add('active');
+
+  $('loadingView').hidden = true;
+  $('authView').hidden = true;
+  $('appView').hidden = false;
+}
+
+let mode = 'in';
+function setMode(m){
+  mode = m;
+  $('modeIn').classList.toggle('active', m==='in');
+  $('modeUp').classList.toggle('active', m==='up');
+  $('nameField').hidden = (m==='in');
+  $('authBtn').textContent = m==='in' ? 'Sign in' : 'Create account';
+  $('passInput').autocomplete = m==='in' ? 'current-password' : 'new-password';
+  showMsg('');
+}
+
+async function submitAuth(){
+  const email = $('emailInput').value.trim();
+  const password = $('passInput').value;
+  const name = $('nameInput').value.trim();
+  if(!email || !password){ showMsg('Please enter your email and password.', 'err'); return; }
+  if(mode==='up' && !name){ showMsg('Please enter your name.', 'err'); return; }
+  $('authBtn').disabled = true;
+  showMsg('');
+  try{
+    if(mode==='in'){
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
+      if(error){ showMsg(error.message, 'err'); }
+      else { $('passInput').value = ''; await handleSession(data.session); }
+    } else {
+      const { data, error } = await sb.auth.signUp({ email, password, options:{ data:{ display_name: name } } });
+      if(error){ showMsg(error.message, 'err'); }
+      else if(data.session){ $('passInput').value = ''; await handleSession(data.session); }
+      else { showMsg('Account created. Check your email to confirm it, then sign in.', 'ok'); setMode('in'); showMsg('Account created. Check your email to confirm it, then sign in.', 'ok'); }
+    }
+  }catch(e){
+    showMsg('Something went wrong. Please try again.', 'err');
+  }
+  $('authBtn').disabled = false;
 }
 
 // ---------- Tabs ----------
@@ -618,13 +805,37 @@ document.querySelectorAll('nav.tabs button').forEach(btn=>{
     document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('section.view').forEach(s=>s.classList.remove('active'));
     btn.classList.add('active');
-    const view = document.getElementById(btn.dataset.view);
-    view.classList.add('active');
-    if(btn.dataset.view === 'progress') renderProgress();
+    $(btn.dataset.view).classList.add('active');
+    if(btn.dataset.view === 'dashboard' && isTeacher) renderDashboard();
   });
 });
 
-renderProgress();
+$('modeIn').addEventListener('click', ()=>setMode('in'));
+$('modeUp').addEventListener('click', ()=>setMode('up'));
+$('authBtn').addEventListener('click', submitAuth);
+['emailInput','passInput','nameInput'].forEach(id=>{
+  $(id).addEventListener('keydown', e=>{ if(e.key==='Enter') submitAuth(); });
+});
+$('signOutBtn').addEventListener('click', async ()=>{
+  try{ await sb.auth.signOut(); }catch(e){}
+  isTeacher = false;
+  activeTopicId = null;
+  $('quizArea').innerHTML = '<p class="quiz-empty">Pick a topic above to start a practice quiz.</p>';
+  showAuth();
+});
+
+// ---------- Start ----------
+(async function init(){
+  if(!window.supabase){
+    $('loadingView').textContent = 'Could not load the sign-in service. Check your internet connection and refresh.';
+    return;
+  }
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  try{
+    const { data } = await sb.auth.getSession();
+    await handleSession(data.session);
+  }catch(e){ showAuth(); }
+})();
 </script>
 </body>
 </html>
